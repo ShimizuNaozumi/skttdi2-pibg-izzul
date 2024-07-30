@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('guardian_name');
             $table->string('guardian_email');
             $table->string('guardian_notel');
-            // $table->string('guardian_gaji');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('user_id')->on('users');
             $table->enum('guardian_role' , ['1','2','3']);
             $table->timestamps();
         });

@@ -15,5 +15,6 @@ class Student extends Model
         'student_name',
         'student_ic',
         'student_class',
+        'user_id',
     ];
 }

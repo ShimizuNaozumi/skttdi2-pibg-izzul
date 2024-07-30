@@ -42,6 +42,9 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review1" type="button" role="tab" aria-controls="review" aria-selected="false">Pengurusan Anak</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review2" type="button" role="tab" aria-controls="review" aria-selected="false">Sejarah Pembayaran</button>
+                            </li>
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
@@ -56,7 +59,7 @@
                                                             <input type="text" name="id" id="id" value="{{$acc->user_id}}" hidden>
                                                             <div class="thumbnail">
                                                                 <label for="user_photo" id="imageLabel">
-                                                                    <img id="oldImage" src="{{$acc->user_photo}}" alt="Tekan ini   " style="cursor: pointer;">
+                                                                    <img id="oldImage" src="{{$acc->user_photo}}" alt="Tekan di sini   " style="cursor: pointer;">
                                                                 </label>
                                                                 <br>
                                                                 <img id="newImage" src="{{$acc->user_photo}}" alt="New Photo" style="display: none;">
@@ -118,10 +121,9 @@
                                                         <label for="guardian_notel">Nombor Telefon</label>
                                                         <input type="text" name="guardian_notel" id="guardian_notel" placeholder="Nombor Telefon">
                                                     </div>
-                                                    {{-- <div class="form-group">
-                                                        <label for="guardian_gaji">Gaji Bulanan</label>
-                                                        <input type="text" name="guardian_gaji" id="guardian_gaji" placeholder="000.00 ">
-                                                    </div> --}}
+                                                    <div class="form-group" hidden>
+                                                        <input type="text" name="user_id" id="user_id" value="{{$acc->user_id}}">
+                                                    </div>
                                                     <div class="form-group">
                                                         <label for="guardian_role">Peranan Dalam Keluarga</label>
                                                         <select name="guardian_role" id="guardian_role">
@@ -138,9 +140,9 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
-                                            <div class="login-form-box registration-form">
+                                            <div class="login-form-box table-responsive">
                                                 <h3 class="title">Senarai Penjaga</h3>
-                                                <table class="table cart-table wishlist-table">
+                                                <table class="table table-hover">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" class="product-title">Nama</th>
@@ -152,10 +154,13 @@
                                                     @foreach ($guardians as $g)
                                                     <tbody>
                                                         <tr>
+                                                            <td hidden>
+                                                                {{$g->user_id}}
+                                                            </td>
                                                             <td class="product-title" data-title="Nama">
                                                                 {{$g->guardian_name}}
                                                             </td>
-                                                            <td class="product-price" data-title="E-mel">
+                                                            <td class="product-price" data-title="">
                                                                 {{$g->guardian_email}}
                                                             </td>
                                                             <td class="product-status" data-title="Peranan">
@@ -196,6 +201,9 @@
                                                         <label for="log-name">No. Kad Pengenalan</label>
                                                         <input type="text" name="student_ic" id="student_ic"  placeholder="tanpa (-)">
                                                     </div>
+                                                    <div class="form-group" hidden>
+                                                        <input type="text" name="user_id" id="user_id" value="{{$acc->user_id}}">
+                                                    </div>
                                                     <div class="form-group">
                                                         <label for="reg-name">Kelas</label>
                                                         <input type="text" name="student_class" id="student_class" placeholder="Kelas">
@@ -207,14 +215,57 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
-                                            <div class="login-form-box registration-form">
+                                            <div class="login-form-box  table-responsive">
                                                 <h3 class="title">Senarai Anak</h3>
-                                                <table class="table cart-table wishlist-table">
+                                                <table class="table table-hover">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" class="product-title">Nama</th>
                                                             <th scope="col" class="product-price">No. Kad</th>
                                                             <th scope="col" class="product-status">Kelas</th>
+                                                            <th scope="col" class="product-add-cart"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    @foreach ($students as $s)
+                                                    <tbody>
+                                                        <tr>
+                                                            <td hidden>
+                                                                {{$s->user_id}}
+                                                            </td>
+                                                            <td class="product-title">
+                                                                {{$s->student_name}}
+                                                            </td>
+                                                            <td class="product-price" data-title="Price">
+                                                                {{$s->student_ic}}
+                                                            </td>
+                                                            <td class="product-status" data-title="Stock">
+                                                                {{$s->student_class}}
+                                                            </td>
+                                                            <td class="product-add-cart">
+                                                                <a href="" class="btn btn-lg btn-danger text-white"><span class="icon-42"></span></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>   
+                                                    @endforeach
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-description-content tab-pane fade" id="review2" role="tabpanel" aria-labelledby="review-tab">
+                                <div class="container position-relative">
+                                    <div class="row g-5 justify-content-center">
+                                        <div class="col-lg-12">
+                                            <div class="login-form-box registration-form">
+                                                <h3 class="title">Senarai Pembayaran</h3>
+                                                <table class="table cart-table wishlist-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" class="product-title">No. Reference</th>
+                                                            <th scope="col" class="product-price">Bank</th>
+                                                            <th scope="col" class="product-status">Tabung</th>
                                                             <th scope="col" class="product-add-cart"></th>
                                                         </tr>
                                                     </thead>

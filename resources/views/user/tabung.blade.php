@@ -58,7 +58,7 @@
                                         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{($fund->total_donations / $fund->fund_target) * 100}}" aria-valuemin="0" aria-valuemax="100">
                                             <div class="progress-bar bg-success" style="width: {{($fund->total_donations / $fund->fund_target) * 100}}%;"></div>
                                         </div>
-                                        <div class="text-end">{{number_format(($fund->total_donations / $fund->fund_target) * 100, 0)}}%</div>
+                                        <div class="text-end">{{ number_format(min(($fund->total_donations / $fund->fund_target) * 100, 100), 0) }}%</div>
                                         <div class="read-more-btn">
                                             <a class="edu-btn btn-small btn-secondary" href="{{route('detail',['id'=>$fund->fund_id])}}">Lanjut<i class="icon-4"></i></a>
                                         </div>

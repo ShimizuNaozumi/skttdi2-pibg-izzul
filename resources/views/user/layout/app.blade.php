@@ -261,7 +261,8 @@
                 @if (session('message'))
                     Swal.fire({
                         icon: '{{ session('status') }}', // 'success', 'error', or 'info'
-                        title: '{{ session('message') }}',
+                        title: '{{ session('title') }}',
+                        text: '{{ session('message') }}',
                     });
                 @endif
             });

@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Guardian;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
@@ -76,13 +77,17 @@ class PageController extends Controller
     {
         $details = Fund::find($id);
         $donors = DB::table('donations')
+                ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
                 ->where('donations.fund_id', $id)
+                ->where('transactions.transaction_status', 1)
                 ->count();
 
         $donations = DB::table('donations')
-                    ->join('transactions', 'donations.transaction_id', 'transactions.transaction_id')
-                    ->where('donations.fund_id', $id)
-                    ->sum('transaction_amount');
+                   ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
+                   ->where('donations.fund_id', $id)
+                   ->where('transactions.transaction_status', 1)
+                   ->sum('transaction_amount');
+
         return view('user.detail', compact('details','donors','donations'));
 
     }
@@ -102,10 +107,19 @@ class PageController extends Controller
 
     public function akaun()
     {
-        $guardians = Guardian::all();
-        $students = Student::all();
         $acc = Auth::user();
-        return view('user.akaun' , compact('acc' , 'guardians' , 'students'));
+        $guardians =  DB::table('guardians')
+                    ->join('users', 'guardians.user_id', '=', 'users.user_id')
+                    ->where('guardians.user_id' , $acc->user_id)
+                    ->get();
+        $students = DB::table('students')
+                    ->join('users', 'students.user_id', '=', 'users.user_id')
+                    ->where('students.user_id' , $acc->user_id)
+                    ->get();
+        $transactions = Transaction::all();
+        
+        return view('user.akaun' , compact('acc' , 'guardians' , 'students' , 'transactions'));
     }
+    
 }
 

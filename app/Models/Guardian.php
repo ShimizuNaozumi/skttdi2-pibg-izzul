@@ -15,7 +15,7 @@ class Guardian extends Model
         'guardian_name',
         'guardian_email',
         'guardian_notel',
-        // 'guardian_gaji',
+        'user_id',
         'guardian_role',
     ];
 }

@@ -34,7 +34,7 @@ class ProsesController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return to_route('index')->with(['message' => 'Anda telah berjaya log masuk.', 'status' => 'success']);
+            return to_route('index');
         }
  
         return back()->withErrors([
@@ -49,21 +49,21 @@ class ProsesController extends Controller
  
         $request->session()->regenerateToken();
  
-        return redirect('/')->with(['message' => 'Berjaya log keluar.', 'status' => 'success']);
+        return redirect('/');
     }
 
     public function addG(Request $request){
+
         $request->validate([
             'guardian_name'=> 'required|string',
             'guardian_email'=> 'required|email',
             'guardian_notel'=> 'required|string',
-            // 'guardian_gaji'=> 'required|string',
+            'user_id'=> 'required',
             'guardian_role'=> 'required|string',
         ],[
             'guardian_name.required' => 'Masukkan nama.',
             'guardian_email.required' => 'Masukkan e-mel.',
             'guardian_notel.required' => 'Masukkan nombor telefon.',
-            // 'guardian_gaji.required' => 'Masukkan gaji bulanan.',
             'guardian_role.required' => 'Sila pilih peranan keluarga.',
         ]);
         
@@ -74,16 +74,16 @@ class ProsesController extends Controller
         $existingRole = Guardian::where('guardian_role' , $guardian_role)->first();
         
         if ($existingRole) {
-            return to_route('akaun')->with(['message' => 'Peranan tidak boleh sama dengan ahli keluarga yang lain. Sila buang ahli keluarga untuk menggunakan peranan tersebut.', 'status' => 'error']);
+            return to_route('akaun')->with(['message' => 'Peranan tidak boleh sama dengan ahli keluarga yang lain. Sila buang ahli keluarga untuk menggunakan peranan tersebut.','title' => 'Gagal',  'status' => 'error']);
         }else{
             $guardian = new Guardian();
             $guardian->guardian_name = $request->guardian_name;
             $guardian->guardian_email = $request->guardian_email;
             $guardian->guardian_notel = $request->guardian_notel;
-            // $guardian->guardian_gaji = $request->guardian_gaji;
+            $guardian->user_id = $request->user_id;
             $guardian->guardian_role = $guardian_role;
             $guardian->save();
-            return to_route('akaun')->with(['message' => 'Berjaya di masukkan.', 'status' => 'success']);
+            return to_route('akaun')->with(['message' => 'Maklumat berjaya dimasukkan.', 'title' => 'Berjaya', 'status' => 'success']);
         }
         
        
@@ -100,12 +100,13 @@ class ProsesController extends Controller
             'student_class.required' => 'Masukkan nombor telefon.',
         ]);
         
-        $guardian = new Student();
-        $guardian->student_name = $request->student_name;
-        $guardian->student_ic = $request->student_ic;
-        $guardian->student_class = $request->student_class;
-        $guardian->save();
-        return to_route('akaun')->with(['message' => 'Berjaya di masukkan.', 'status' => 'success']);
+        $student = new Student();
+        $student->user_id = $request->user_id;
+        $student->student_name = $request->student_name;
+        $student->student_ic = $request->student_ic;
+        $student->student_class = $request->student_class;
+        $student->save();
+        return to_route('akaun')->with(['message' => 'Maklumat berjaya dimasukkan.','title' => 'Berjaya', 'status' => 'success']);
     }
 
     public function update(Request $request, string $id){
@@ -130,7 +131,7 @@ class ProsesController extends Controller
         // $update->gaji = $request->gaji;
         $update->save();
 
-        return to_route('akaun')->with(['message' => 'Maklumat berjaya dikemas kini.', 'status' => 'success']);
+        return to_route('akaun')->with(['message' => 'Maklumat anda berjaya dikemas kini.','title' => 'Berjaya', 'status' => 'success']);
     }
 
     public function gambar(Request $request, string $id){
@@ -150,7 +151,7 @@ class ProsesController extends Controller
         }
         $update->save();
 
-        return to_route('akaun')->with(['message' => 'Gambar berjaya dikemas kini.', 'status' => 'success']);
+        return to_route('akaun')->with(['message' => 'Gambar berjaya dikemas kini.','title' => 'Berjaya', 'status' => 'success']);
     
     }
 
@@ -176,7 +177,7 @@ class ProsesController extends Controller
                 'form_params' => [
                     'userSecretKey' => env('TOYYIBPAY_API_KEY'),
                     'categoryCode' => env('TOYYIBPAY_CATEGORY_CODE'),
-                    'billName' => $request->tabung,
+                    'billName' => 'Sumbangan Tabung SKTTDI2',
                     'billDescription' => 'Sumbangan untuk tabung ' . $request->tabung,
                     'billPriceSetting' => 1,
                     'billPayorInfo' => 1,
@@ -269,11 +270,11 @@ class ProsesController extends Controller
         $transaction->update($transactionData);
         
         if ($statusId == 1) {
-            return to_route('index')->with(['message' => 'Terima kasih kerana telah membantu.', 'status' => 'success']);
+            return to_route('index')->with(['message' => 'Terima kasih kerana telah menderma tabung kami.','title' => 'Berjaya', 'status' => 'success']);
         } elseif ($statusId == 3) {
-            return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.', 'status' => 'error']);
+            return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.','title' => 'Gagal', 'status' => 'error']);
         } else {
-            return to_route('index')->with(['message' => 'Pembayaran anda masih dalam proses.', 'status' => 'info']);
+            return to_route('index')->with(['message' => 'Pembayaran anda masih dalam proses.','title' => 'Gagal', 'status' => 'info']);
         }
     }
 
@@ -308,12 +309,20 @@ class ProsesController extends Controller
         $transaction->update($transactionData);
 
         if ($statusId == 1) {
-            return to_route('index')->with(['message' => 'Terima kasih kerana telah membantu.', 'status' => 'success']);
+            return to_route('index')->with(['message' => 'Terima kasih kerana telah menderma tabung kami.','title' => 'Berjaya', 'status' => 'success']);
         } elseif ($statusId == 3) {
-            return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.', 'status' => 'error']);
+            return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.','title' => 'Gagal', 'status' => 'error']);
         } else {
-            return to_route('index')->with(['message' => 'Pembayaran anda masih dalam proses.', 'status' => 'info']);
+            return to_route('index')->with(['message' => 'Pembayaran anda masih dalam proses.','title' => 'Gagal', 'status' => 'info']);
         }
+    }
+
+    public function destroy(string $id)
+    {
+        $delete = Guardian::find($id);
+        $delete->delete();
+        
+        return to_route('index');
     }
 
     
