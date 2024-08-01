@@ -10,12 +10,13 @@ use App\Models\Donation;
 use App\Models\Guardian;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class ProsesController extends Controller
 {
@@ -388,14 +389,44 @@ class ProsesController extends Controller
         }
     }
 
-    public function destroy(string $id)
+    public function destroyG(string $id)
     {
-        $id = decrypt_string($id);
-        $delete = Guardian::find($id);
-        $delete->delete();
-        
-        return to_route('index');
+        try {
+            $id = decrypt($id);
+            $guardian = Guardian::find($id);
+
+            if (!$guardian) {
+                return to_route('akaun')->with(['message' => 'Guardian not found.', 'status' => 'error']);
+            }
+
+            $guardian->delete();
+            return to_route('akaun')->with(['message' => 'Data berjaya dibuang.', 'status' => 'success']);
+
+        } catch (DecryptException $e) {
+            return to_route('akaun')->with(['message' => 'Invalid ID.', 'status' => 'error']);
+        } catch (\Exception $e) {
+            return to_route('akaun')->with(['message' => 'An error occurred while deleting the guardian.', 'status' => 'error']);
+        }
     }
 
-    
+    public function destroyS(string $id)
+    {
+        try {
+            $id = decrypt($id);
+            $student = Student::find($id);
+
+            if (!$student) {
+                return to_route('akaun')->with(['message' => 'Guardian not found.', 'status' => 'error']);
+            }
+
+            $student->delete();
+            return to_route('akaun')->with(['message' => 'Data berjaya dibuang.', 'status' => 'success']);
+
+        } catch (DecryptException $e) {
+            return to_route('akaun')->with(['message' => 'Invalid ID.', 'status' => 'error']);
+        } catch (\Exception $e) {
+            return to_route('akaun')->with(['message' => 'An error occurred while deleting the guardian.', 'status' => 'error']);
+        }
+    }
+
 }

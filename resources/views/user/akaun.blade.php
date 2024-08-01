@@ -151,11 +151,12 @@
                                                             <th scope="col" class="product-add-cart"></th>
                                                         </tr>
                                                     </thead>
-                                                    @foreach ($guardians as $g)
                                                     <tbody>
+                                                        @foreach ($guardians as $g)
                                                         <tr>
                                                             <td hidden>
                                                                 {{$g->user_id}}
+                                                                {{$g->guardian_id}}
                                                             </td>
                                                             <td class="product-title" data-title="Nama">
                                                                 {{$g->guardian_name}}
@@ -164,22 +165,50 @@
                                                                 {{$g->guardian_email}}
                                                             </td>
                                                             <td class="product-status" data-title="Peranan">
-                                                                @if ($g->guardian_role==1)
+                                                                @if ($g->guardian_role == 1)
                                                                     Bapa
-                                                                @elseif($g->guardian_role==2)
+                                                                @elseif($g->guardian_role == 2)
                                                                     Ibu
-                                                                @elseif($g->guardian_role==3)
+                                                                @elseif($g->guardian_role == 3)
                                                                     Penjaga
                                                                 @endif
                                                             </td>
-                                                            <td class="product-add-cart">
-                                                                <a href="#" class="btn btn-lg btn-danger text-white"><span class="icon-42"></span></a>
+                                                            <td>
+                                                                <form id="delete-form-{{ $g->guardian_id }}" method="POST" action="{{ route('destroyG', ['id' => encrypt($g->guardian_id)]) }}" style="display: none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                
+                                                                <button type="button" class="btn btn-danger" style="padding: 10px;" onclick="confirmDelete('{{ $g->guardian_id }}')">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(250, 247, 247, 1);transform: rotate(90deg);msFilter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);">
+                                                                        <path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path>
+                                                                        <path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path>
+                                                                    </svg>
+                                                                </button>
                                                             </td>
                                                         </tr>
+                                                        @endforeach
                                                     </tbody>   
-                                                    @endforeach
-                                                    
                                                 </table>
+                                                <script>
+                                                    function confirmDelete(guardianId) {
+                                                        Swal.fire({
+                                                            title: "Data akan dibuang!",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#3085d6",
+                                                            cancelButtonColor: "#d33",
+                                                            confirmButtonText: "Pasti!"
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                // Submit the form
+                                                                document.getElementById('delete-form-' + guardianId).submit();
+                                                            }
+                                                        });
+                                                    }
+
+                                                </script>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -242,13 +271,40 @@
                                                                 {{$s->student_class}}
                                                             </td>
                                                             <td class="product-add-cart">
-                                                                <a href="" class="btn btn-lg btn-danger text-white"><span class="icon-42"></span></a>
+                                                                <form id="delete-form-{{ $s->student_id }}" method="POST" action="{{ route('destroyS', ['id' => encrypt($s->student_id)]) }}" style="display: none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                
+                                                                <button type="button" class="btn btn-danger" style="padding: 10px;" onclick="confirmDeletee('{{ $s->student_id }}')">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(250, 247, 247, 1);transform: rotate(90deg);msFilter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);">
+                                                                        <path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path>
+                                                                        <path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path>
+                                                                    </svg>
+                                                                </button>
                                                             </td>
                                                         </tr>
+                                                        @endforeach
                                                     </tbody>   
-                                                    @endforeach
-                                                    
                                                 </table>
+                                                <script>
+                                                    function confirmDeletee(studentId) {
+                                                        Swal.fire({
+                                                            title: "Data akan dibuang!",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#3085d6",
+                                                            cancelButtonColor: "#d33",
+                                                            confirmButtonText: "Pasti!"
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                // Submit the form
+                                                                document.getElementById('delete-form-' + studentId).submit();
+                                                            }
+                                                        });
+                                                    }
+
+                                                </script>
                                             </div>
                                         </div>
                                     </div>

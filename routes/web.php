@@ -42,7 +42,9 @@ Route::middleware('auth')->namespace('App\Http\Controllers\user')->group(functio
     Route::post('update/{id}', [ProsesController::class, 'update'])->name('update');
     Route::post('gambar/{id}', [ProsesController::class, 'gambar'])->name('gambar');
     Route::post('addG',[ProsesController::class, 'addG'])->name('addG');
+    Route::delete('destroyG/{id}', [ProsesController::class, 'destroyG'])->name('destroyG');
     Route::post('addS',[ProsesController::class, 'addS'])->name('addS');
+    Route::delete('destroyS/{id}', [ProsesController::class, 'destroyS'])->name('destroyS');
     Route::get('logoutt',[ProsesController::class, 'logout'])->name('logout_user');
 });
 
