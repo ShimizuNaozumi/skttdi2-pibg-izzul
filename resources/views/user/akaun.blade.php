@@ -3,6 +3,25 @@
 @section('title' , 'Akaun Saya')
     
 @section('content')
+<style>
+    .image-container {
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+        border: 0px solid #ddd; 
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>
+
         <!--=====================================-->
         <!--=       Breadcrumb Area Start      =-->
         <!--=====================================-->
@@ -42,9 +61,6 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review1" type="button" role="tab" aria-controls="review" aria-selected="false">Pengurusan Anak</button>
                             </li>
-                            {{-- <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review2" type="button" role="tab" aria-controls="review" aria-selected="false">Sejarah Pembayaran</button>
-                            </li> --}}
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
@@ -59,10 +75,14 @@
                                                             <input type="text" name="id" id="id" value="{{$acc->user_id}}" hidden>
                                                             <div class="thumbnail">
                                                                 <label for="user_photo" id="imageLabel">
-                                                                    <img id="oldImage" src="{{$acc->user_photo}}" alt="Tekan di sini   " style="cursor: pointer;">
+                                                                    <div class="image-container">
+                                                                        <img id="oldImage" src="@if($acc->user_photo == null) {{asset('/assets/images/user-icon.png')}} @else {{$acc->user_photo}} @endif" alt="Tekan di sini" style="cursor: pointer;">
+                                                                    </div>
                                                                 </label>
                                                                 <br>
-                                                                <img id="newImage" src="{{$acc->user_photo}}" alt="New Photo" style="display: none;">
+                                                                <div class="image-container" hidden>
+                                                                    <img id="newImage" src="{{$acc->user_photo}}" alt="New Photo" style="display: none;">
+                                                                </div>
                                                                 <br>
                                                                 <input type="file" id="user_photo" name="user_photo" style="display: none;" onchange="previewPhotos(event)">
                                                                 <small>Klik gambar untuk mengemas kini gambar profil anda</small>
