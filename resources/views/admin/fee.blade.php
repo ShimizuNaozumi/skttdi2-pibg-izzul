@@ -36,7 +36,7 @@
                             <th>Nama Pelajar</th>
                             <th>Kelas</th>
                             <th>Jumlah</th>
-                            <th></th>
+                            <th>Tindakan</th>
                         </tr>
                         </thead>
                         <tbody>

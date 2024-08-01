@@ -76,7 +76,7 @@
                                         </ul>
                                         <div class="read-more-btn">
                                             <p>Klik butang di bawah untuk melakukan sumbangan.</p>
-                                            <a href="{{route('sumbang',['id'=>$details->fund_id])}}" class="edu-btn">Lanjut<i class="icon-4"></i></a>
+                                            <a href="{{route('sumbang',['id'=>encrypt_string($details->fund_id)])}}" class="edu-btn">Lanjut<i class="icon-4"></i></a>
                                         </div>
                                     </div>
                                 </div>

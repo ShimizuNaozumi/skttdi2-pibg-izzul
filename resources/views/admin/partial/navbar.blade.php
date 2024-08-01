@@ -25,9 +25,11 @@
               <div>{{strtoupper($acc->admin_name)}}</div>
               <div class="mt-1 small text-secondary">
                 @if($acc->admin_category == '1')
-                Super Admin
+                Pentadbir
                 @elseif($acc->admin_category == '2')
                 Guru
+                @elseif($acc->admin_category == '2')
+                Bendahari
                 @endif
               </div>
             </div>
@@ -87,13 +89,33 @@
           <li class="nav-item mb-3">
             <a class="nav-link" href="{{route('fee')}}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-report-money"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" /><path d="M12 17v1m0 -8v1" /></svg>
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-coin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg>
               </span>
               <span class="nav-link-title">
                 Yuran
               </span>
             </a>
           </li>
+          @if($acc->admin_category != '2')
+          <li class="nav-item dropdown mb-3">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false"  >
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-report-money"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" /><path d="M12 17v1m0 -8v1" /></svg>
+              </span>
+              <span class="nav-link-title">
+                Laporan Kewangan
+              </span>
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{{route('donation_report')}}">
+                Laporan Sumbangan
+              </a>
+              <a class="dropdown-item" href="#">
+                Laporan Yuran
+              </a>
+            </div>
+          </li>
+          @endif
           <li class="nav-item dropdown mb-3">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false"  >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -133,9 +155,11 @@
               <div>{{strtoupper($acc->admin_name)}}</div>
               <div class="mt-1 small text-secondary">
                 @if($acc->admin_category == '1')
-                Super Admin
+                Pentadbir
                 @elseif($acc->admin_category == '2')
                 Guru
+                @elseif($acc->admin_category == '3')
+                Bendahari
                 @endif
               </div>
             </div>

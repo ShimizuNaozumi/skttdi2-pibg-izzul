@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Mail\ChangePassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
@@ -74,7 +76,15 @@ class LoginController extends Controller
                 ->first();
         
         if($acc){
-            dd($acc);
+            Mail::to($acc->admin_email)->send(new ChangePassword([
+                'id' => $acc->admin_id,
+            ]));
+            return back()->with([
+                'icon' => '<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" />',
+                'alert' => 'success',
+                'message' => 'E-mel telah dihantar',
+            ]);
+
         }else{
             return back()->withInput()->with([
                 'icon' => '<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" />',
@@ -82,5 +92,9 @@ class LoginController extends Controller
                 'message' => 'Username tidak wujud.',
             ]);
         }
+    }
+    public function modify_password(string $id){
+        $id = decrypt_string($id);
+        return view('admin.change_password', compact('id'));
     }
 }

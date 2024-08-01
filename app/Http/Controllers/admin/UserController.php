@@ -57,6 +57,8 @@ class UserController extends Controller
     }
     public function activate(string $id)
     {
+        $id = decrypt_string($id);
+
         $user = User::findOrFail($id);
         $user->user_status = '1';
         $user->save();
@@ -65,6 +67,8 @@ class UserController extends Controller
     }
     public function deactivate(string $id)
     {
+        $id = decrypt_string($id);
+        
         $user = User::findOrFail($id);
         $user->user_status = '2';
         $user->save();

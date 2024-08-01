@@ -42,9 +42,9 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review1" type="button" role="tab" aria-controls="review" aria-selected="false">Pengurusan Anak</button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review2" type="button" role="tab" aria-controls="review" aria-selected="false">Sejarah Pembayaran</button>
-                            </li>
+                            </li> --}}
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
@@ -53,7 +53,7 @@
                                     <div class="container">
                                             <div class="row row--40">
                                                 <div class="col-lg-4">
-                                                    <form action="{{route('gambar',['id'=>$acc->user_id])}}" method="post" enctype="multipart/form-data"> 
+                                                    <form action="{{route('gambar',['id'=>encrypt_string($acc->user_id)])}}" method="post" enctype="multipart/form-data"> 
                                                         <div class="team-details-thumb">
                                                             @csrf
                                                             <input type="text" name="id" id="id" value="{{$acc->user_id}}" hidden>
@@ -72,7 +72,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <form method="POST" action="{{route('update',['id'=>$acc->user_id])}}" >
+                                                    <form method="POST" action="{{route('update',['id'=>encrypt_string($acc->user_id)])}}" >
                                                         <div class="team-details-content">
                                                             <div class="login-form-box registration-form">
                                                                 @csrf
@@ -125,9 +125,9 @@
                                                         <input type="text" name="user_id" id="user_id" value="{{$acc->user_id}}">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="guardian_role">Peranan Dalam Keluarga</label>
+                                                        <label for="guardian_role">Hubungan Dalam Keluarga</label>
                                                         <select name="guardian_role" id="guardian_role">
-                                                            <option selected>Pilih peranan</option>
+                                                            <option selected>Pilih hubungan</option>
                                                             <option value="1">Bapa</option>
                                                             <option value="2">Ibu</option>
                                                             <option value="3">Penjaga</option>
@@ -147,7 +147,7 @@
                                                         <tr>
                                                             <th scope="col" class="product-title">Nama</th>
                                                             <th scope="col" class="product-price">E-mel</th>
-                                                            <th scope="col" class="product-status">Peranan</th>
+                                                            <th scope="col" class="product-status">Hubungan</th>
                                                             <th scope="col" class="product-add-cart"></th>
                                                         </tr>
                                                     </thead>
@@ -254,7 +254,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-description-content tab-pane fade" id="review2" role="tabpanel" aria-labelledby="review-tab">
+                            {{-- <div class="product-description-content tab-pane fade" id="review2" role="tabpanel" aria-labelledby="review-tab">
                                 <div class="container position-relative">
                                     <div class="row g-5 justify-content-center">
                                         <div class="col-lg-12">
@@ -293,7 +293,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

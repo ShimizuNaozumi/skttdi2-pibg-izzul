@@ -38,7 +38,7 @@
             <div class="col-12 col-md-9 tab-content">
               {{-- update password --}}
               <div class="tab-pane active show">
-                <form class="card border-0" action="{{route('update_password', ['id'=>$acc->admin_id])}}" method="post">
+                <form class="card border-0" action="{{route('update_password', ['id'=>encrypt_string($acc->admin_id)])}}" method="post">
                     @method('put')
                     @csrf
                     <div class="card-body">

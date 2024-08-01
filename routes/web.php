@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\FeeController;
-use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\user\PageController;
 use App\Http\Controllers\admin\FundController;
 use App\Http\Controllers\admin\UserController;
@@ -10,7 +9,9 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\LoginController;
 use App\Http\Controllers\user\ProsesController;
 use App\Http\Controllers\admin\LogoutController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\admin\ReceiptController;
 use App\Http\Controllers\admin\DonationController;
 use App\Http\Controllers\admin\DashboardController;
 
@@ -23,6 +24,9 @@ Route::namespace('App\Http\Controllers\user')->group(function(){
     Route::get('return', [ProsesController::class, 'return'])->name('return');
     Route::get('callBack', [ProsesController::class, 'callBack'])->name('callBack');
     Route::post('pay', [ProsesController::class, 'pay'])->name('pay');
+    Route::get('showReceipt', [ProsesController::class, 'showReceipt'])->name('showReceipt'); 
+    Route::get('receipt', [ProsesController::class, 'receipt'])->name('receipt');
+
 });
 
 Route::middleware('guest')->namespace('App\Http\Controllers\user')->group(function(){   
@@ -51,6 +55,7 @@ Route::middleware('guest:admin')->namespace('App\Http\Controllers\admin')->prefi
     Route::get('/forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
     Route::post('/change_password', [LoginController::class, 'change_password'])->name('change_password');
     Route::get('/modify_password/{id}', [LoginController::class, 'modify_password'])->name('modify_password');
+    
 });
 
 Route::middleware('auth:admin')->namespace('App\Http\Controllers\admin')->prefix('admin')->group(function () {
@@ -83,7 +88,10 @@ Route::middleware('auth:admin')->namespace('App\Http\Controllers\admin')->prefix
     Route::get('/donation', [DonationController::class, 'donation'])->name('donation');
     Route::get('/donation/{id}', [DonationController::class, 'show_donation'])->name('show_donation');
 
-    Route::get('/donation_receipt/{id}', [PDFController::class, 'donation_receipt'])->name('donation_receipt');
+    Route::get('/donation_receipt/{id}', [ReceiptController::class, 'donation_receipt'])->name('donation_receipt');
+
+    Route::get('/donation_report', [ReportController::class, 'donation_report'])->name('donation_report');
+    Route::get('/donation_report/{id}', [ReportController::class, 'generate_donation_report'])->name('generate_donation_report');
 
     Route::get('/fee', [FeeController::class, 'fee'])->name('fee');
 

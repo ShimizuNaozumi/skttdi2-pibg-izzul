@@ -42,7 +42,7 @@
                     <th>E-mel</th>
                     <th>No. Telefon</th>
                     <th>Kategori</th>
-                    <th></th>
+                    <th class="w-1">Tindakan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Batal</button>
-                          <form action="{{route('activate_admin',['id'=>$admin->admin_id])}}" method="post">
+                          <form action="{{route('activate_admin',['id'=>encrypt_string($admin->admin_id)])}}" method="post">
                             @method('put')
                             @csrf
                             <button class="btn btn-warning btn-icon p-2">
@@ -112,7 +112,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Batal</button>
-                          <form action="{{route('deactivate_admin',['id'=>$admin->admin_id])}}" method="post">
+                          <form action="{{route('deactivate_admin',['id'=>encrypt_string($admin->admin_id)])}}" method="post">
                             @method('put')
                             @csrf
                             <button class="btn btn-warning btn-icon p-2">
@@ -143,9 +143,13 @@
                       <div class="modal-body">
                           @csrf
                           <div class="mb-3">
-                              <label class="form-label">Username <span class="text-secondary">(Pilihan)</span></label>
-                              <input type="text" class="form-control" name="username" id="username" value="{{old('username')}}" placeholder="Username">
-                          </div>
+                              <label class="form-label">Username</label>
+                              <input type="text" class="form-control" name="username" id="username" value="{{old('username')}}" placeholder="Username" required>
+                              <label class="form-check form-check-inline mt-2 mb-0">
+                                <input class="form-check-input" type="checkbox" id="generateUsername" name="generateUsername">
+                                <span class="form-check-label">Jana Username</span>
+                              </label>
+                            </div>
                           <div class="mb-3">
                               <label class="form-label">Nama</label>
                               <input type="text" class="form-control" name="name" placeholder="Nama penuh" value="{{old('name')}}" required>
@@ -182,4 +186,20 @@
 	@include('admin.partial.footer')
   </div>
 </div>
+<script>
+  document.getElementById('generateUsername').addEventListener('change', function() {
+      if (this.checked) {
+          const generatedUsername = generateUsername();
+          document.getElementById('username').value = generatedUsername;
+      } else {
+          document.getElementById('username').value = '';
+      }
+  });
+
+  function generateUsername() {
+      const prefix = "admin";
+      const randomNum = Math.floor(Math.random() * 10000);
+      return prefix + randomNum;
+  }
+</script>
 @endsection

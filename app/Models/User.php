@@ -21,8 +21,8 @@ class User extends Authenticatable
     protected $fillable = [
         'user_name',
         'user_email',
-        'user_photo',
         'user_notel',
+        'user_photo',
         'user_password',
     ];
 
@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the password for the admin.
+     * Get the password for the user.
      *
      * @return string
      */

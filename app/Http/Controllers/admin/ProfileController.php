@@ -19,13 +19,13 @@ class ProfileController extends Controller
 
     public function update_profile(Request $request, string $id)
     {
+        $id = decrypt_string($id);
+
         $request->validate([
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'notel' => 'required|string',
         ]);
-
-        
 
         $check_username = DB::table('admins')
                         ->where('admin_username', $request->username)
@@ -44,6 +44,7 @@ class ProfileController extends Controller
         $admin->admin_username = $request->username;
         $admin->admin_name = $request->name;
         $admin->admin_notel = $request->notel;
+        $admin->updated_at = now();
 
         if ($admin->save()) {
             return back()->with([
@@ -68,6 +69,8 @@ class ProfileController extends Controller
 
     public function update_password(Request $request, string $id)
     {
+        $id = decrypt_string($id);
+        
         $request->validate([
             'current_password' => 'required',
             'new_password' => ['required','string','min:8','regex:/[A-Z]/','regex:/[a-z]/','regex:/[!@#$%^&*(),.?":{}|<>]/'],
@@ -81,6 +84,7 @@ class ProfileController extends Controller
         $admin = Admin::findOrFail($id);
 
         if (Hash::check($request->current_password, $admin->admin_password)) {
+            $admin->updated_at = now();
             $admin->admin_password = Hash::make($request->new_password);
 
             if ($admin->save()) {

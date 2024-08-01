@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="title">
-                                            <a href="{{route('detail',['id'=>$fund->fund_id])}}">{{$fund->fund_name}}</a>
+                                            <a href="{{route('detail',['id'=>encrypt_string($fund->fund_id)])}}">{{$fund->fund_name}}</a>
                                         </h5>
                                         <?php
                                             $desc = Str::limit(strip_tags($fund->fund_description), 100); 
@@ -89,7 +89,7 @@
                                         </div>
                                         <div class="text-end">{{ number_format(min(($fund->total_donations / $fund->fund_target) * 100, 100), 0) }}%</div>
                                         <div class="read-more-btn">
-                                            <a class="edu-btn btn-small btn-secondary" href="{{route('detail',['id'=>$fund->fund_id])}}">Lanjut<i class="icon-4"></i></a>
+                                            <a class="edu-btn btn-small btn-secondary" href="{{route('detail',['id'=>encrypt_string($fund->fund_id)])}}">Lanjut<i class="icon-4"></i></a>
                                         </div>
                                     </div>
                                 </div>

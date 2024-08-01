@@ -77,7 +77,7 @@
                                                     <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
                                                         <table cellpadding="0" cellspacing="0" class="es-left" align="left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
                                                             <tr>
-                                                                <td align="left" style="padding:0;Margin:0;width:121px">
+                                                                <td align="left" style="padding:0;Margin:0;width:200px">
                                                                     <table cellpadding="0" cellspacing="0" width="100%" bgcolor="#e8eafb" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;background-color:#e8eafb;border-radius:10px 0 0 10px" role="presentation">
                                                                         <tr>
                                                                             <td align="right" style="padding:0;Margin:0;padding-top:10px">
@@ -97,7 +97,7 @@
                                                     <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
                                                         <table cellpadding="0" cellspacing="0" class="es-left" align="left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
                                                             <tr>
-                                                                <td align="left" style="padding:0;Margin:0;width:155px">
+                                                                <td align="left" style="padding:0;Margin:0;width:200px">
                                                                     <table cellpadding="0" cellspacing="0" width="100%" bgcolor="#e8eafb" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;background-color:#e8eafb;border-radius:0 10px 10px 0" role="presentation">
                                                                         <tr>
                                                                             <td align="left" style="padding:0;Margin:0;padding-top:10px;padding-left:10px">

@@ -55,6 +55,7 @@ class FundController extends Controller
         $donations = DB::table('donations')
             ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
             ->select('donations.fund_id', DB::raw('SUM(transaction_amount) as total_donations'))
+            ->where('transaction_status', 1)
             ->groupBy('donations.fund_id')
             ->get();
         
@@ -70,12 +71,15 @@ class FundController extends Controller
 
     public function edit_fund(string $id)
     {
+        $id = decrypt_string($id);
         $acc = Auth::guard('admin')->user();
         $fund = Fund::find($id);
         return view('admin.edit_fund', compact('acc','fund'));
     }
     public function update_fund(Request $request, string $id)
     {
+        $id = decrypt_string($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -109,6 +113,8 @@ class FundController extends Controller
 
     public function delete_fund(string $id)
     {
+        $id = decrypt_string($id);
+
         $fund = DB::table('funds')
                 ->join('donations', 'funds.fund_id', '=', 'donations.fund_id')
                 ->join('transactions', 'transactions.transaction_id', '=', 'donations.transaction_id')
@@ -136,6 +142,8 @@ class FundController extends Controller
 
     public function publish_fund(string $id)
     {
+        $id = decrypt_string($id);
+
         $fund = Fund::findOrFail($id);
         $fund->fund_status = '2';
         $fund->save();
@@ -145,6 +153,8 @@ class FundController extends Controller
 
     public function conceal_fund(string $id)
     {
+        $id = decrypt_string($id);
+        
         $fund = Fund::findOrFail($id);
         $fund->fund_status = '1';
         $fund->save();

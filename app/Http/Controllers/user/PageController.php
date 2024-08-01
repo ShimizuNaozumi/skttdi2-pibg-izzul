@@ -75,6 +75,7 @@ class PageController extends Controller
 
     public function detail(string $id)
     {
+        $id = decrypt_string($id);
         $details = Fund::find($id);
         $donors = DB::table('donations')
                 ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
@@ -94,6 +95,7 @@ class PageController extends Controller
 
     public function sumbang(string $id)
     {
+        $id = decrypt_string($id);
         $details = Fund::find($id);
         $acc = Auth::user();
         return view('user.payment', compact('details' , 'acc'));
@@ -122,4 +124,3 @@ class PageController extends Controller
     }
     
 }
-

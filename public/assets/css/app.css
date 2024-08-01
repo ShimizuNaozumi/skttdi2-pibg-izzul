@@ -28055,7 +28055,7 @@ blockquote .author {
     Spacing
 -------------------------*/
 .edu-section-gap {
-    padding: 30px 0 30px;
+    padding: 115px 0 120px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -28071,7 +28071,7 @@ blockquote .author {
 }
 
 .gap-tb-text {
-    padding: 30px 0 30px;
+    padding: 115px 0 112px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -28087,18 +28087,18 @@ blockquote .author {
 }
 
 .section-gap-equal {
-    padding: 30px 0;
+    padding: 120px 0;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     .section-gap-equal {
-        padding: 30px 0;
+        padding: 100px 0;
     }
 }
 
 @media only screen and (max-width: 767px) {
     .section-gap-equal {
-        padding: 30px 0;
+        padding: 80px 0;
     }
 }
 

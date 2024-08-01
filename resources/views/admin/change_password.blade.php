@@ -6,7 +6,7 @@
   <div class="page page-center">
     <div class="container container-tight py-4">
 
-      <form class="card card-md" action="{{route('modify_password')}}" method="post" autocomplete="off">
+      <form class="card card-md" action="{{route('reset_password', ['id' => encrypt_string($id)])}}" method="post" autocomplete="off">
           @method('put')
           @csrf
           <div class="card-body">

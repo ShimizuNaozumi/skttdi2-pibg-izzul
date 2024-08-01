@@ -24,6 +24,8 @@ class DonationController extends Controller
 
     public function show_donation(string $id)
     {
+        $id = decrypt_string($id);
+        
         $acc = Auth::guard('admin')->user();
 
         $donation = DB::table('donations')

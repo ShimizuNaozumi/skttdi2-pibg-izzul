@@ -41,7 +41,7 @@
                     <th>Nama</th>
                     <th>E-mel</th>
                     <th>No. Telefon</th>
-                    <th class="w-1"></th>
+                    <th class="w-1">Tindakan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -100,7 +100,7 @@
                             Batal
                           </a>
                           @if($user->user_status == '1')
-                          <form action="{{route('deactivate_user', ['id'=>$user->user_id])}}" method="post">
+                          <form action="{{route('deactivate_user', ['id'=>encrypt_string($user->user_id)])}}" method="post">
                             @method('put')
                             @csrf
                             <button type="submit" class="btn btn-danger ms-auto">
@@ -108,7 +108,7 @@
                             </button>
                           </form>
                           @elseif($user->user_status == '2')
-                          <form action="{{route('activate_user',['id'=>$user->user_id])}}" method="post">
+                          <form action="{{route('activate_user',['id'=>encrypt_string($user->user_id)])}}" method="post">
                             @method('put')
                             @csrf
                             <button type="submit" class="btn btn-success ms-auto">

@@ -38,7 +38,7 @@
             <div class="col-12 col-md-9 tab-content">
               {{-- account --}}
               <div class="tab-pane active show">
-                <form class="card border-0" action="{{route('update_profile', ['id'=>$acc->admin_id])}}" method="post" autocomplete="off">
+                <form class="card border-0" action="{{route('update_profile', ['id'=>encrypt_string($acc->admin_id)])}}" method="post" autocomplete="off">
                     @method('put')
                     @csrf
                     <div class="card-body">

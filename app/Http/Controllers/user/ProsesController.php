@@ -10,10 +10,12 @@ use App\Models\Donation;
 use App\Models\Guardian;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProsesController extends Controller
 {
@@ -110,6 +112,7 @@ class ProsesController extends Controller
     }
 
     public function update(Request $request, string $id){
+        $id = decrypt_string($id);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -135,6 +138,7 @@ class ProsesController extends Controller
     }
 
     public function gambar(Request $request, string $id){
+        $id = decrypt_string($id);
         $update = User::findOrFail($id);
 
         if ($request->hasFile('user_photo')) {
@@ -270,14 +274,81 @@ class ProsesController extends Controller
         $transaction->update($transactionData);
         
         if ($statusId == 1) {
-            return to_route('index')->with(['message' => 'Terima kasih kerana telah menderma tabung kami.','title' => 'Berjaya', 'status' => 'success']);
+            return redirect()->route('receipt', ['billCode' => $billCode])
+                ->with(['message' => 'Terima kasih kerana telah menderma tabung kami.','title' => 'Berjaya', 'status' => 'success']);
         } elseif ($statusId == 3) {
             return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.','title' => 'Gagal', 'status' => 'error']);
         } else {
             return to_route('index')->with(['message' => 'Pembayaran anda masih dalam proses.','title' => 'Gagal', 'status' => 'info']);
         }
+    } 
+
+    public function receipt(Request $request){
+        $billCode = $request->query('billCode');
+
+        $transaction = Transaction::where('transaction_code', $billCode)->first();
+
+        $summary = DB::table('donations')
+                ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
+                ->join('funds', 'donations.fund_id', '=', 'funds.fund_id')
+                ->select('donations.*','transactions.*','funds.*')
+                ->where('transactions.transaction_code', $billCode)
+                ->first();
+
+        if (!$transaction) {
+            return redirect()->route('index')->with(['message' => 'Transaksi tidak dijumpai.', 'title' => 'Gagal', 'status' => 'error']);
+        }else{
+            $data = [
+                'donation_invoiceno' => $summary->transaction_invoiceno,
+                'donation_name' => $summary->fund_name,
+                'donation_date' => date('d/m/Y h:i:s A', strtotime($summary->transaction_issued_date)),
+                'donation_amount' => $summary->transaction_amount,
+                'donor_name' => $summary->donor_name,
+                'donor_email' => $summary->donor_email,
+                'donor_notel' => $summary->donor_notel,
+            ];        
+
+            $html = view('user.downloadreceipt', $data)->render();
+            $pdf = Pdf::loadHTML($html);
+            return view('user.receipt' , ['transaction' => $transaction]);
+        }
+
+        return view('user.receipt', ['transaction' => $transaction]);
     }
 
+    public function showReceipt(Request $request)
+    {
+        $billCode = $request->query('billCode');
+
+        $transaction = Transaction::where('transaction_code', $billCode)->first();
+
+        $summary = DB::table('donations')
+                ->join('transactions', 'donations.transaction_id', '=', 'transactions.transaction_id')
+                ->join('funds', 'donations.fund_id', '=', 'funds.fund_id')
+                ->select('donations.*','transactions.*','funds.*')
+                ->where('transactions.transaction_code', $billCode)
+                ->first();
+
+        if (!$transaction) {
+            return redirect()->route('index')->with(['message' => 'Transaksi tidak dijumpai.', 'title' => 'Gagal', 'status' => 'error']);
+        }else{
+            $data = [
+                'donation_invoiceno' => $summary->transaction_invoiceno,
+                'donation_name' => $summary->fund_name,
+                'donation_date' => date('d/m/Y h:i:s A', strtotime($summary->transaction_issued_date)),
+                'donation_amount' => $summary->transaction_amount,
+                'donor_name' => $summary->donor_name,
+                'donor_email' => $summary->donor_email,
+                'donor_notel' => $summary->donor_notel,
+            ];        
+
+            $html = view('user.downloadreceipt', $data)->render();
+            $pdf = Pdf::loadHTML($html);
+            return $pdf->stream();
+        }
+
+        return view('user.receipt', ['transaction' => $transaction]);
+    }
 
     public function callBack(Request $request)
     {
@@ -319,6 +390,7 @@ class ProsesController extends Controller
 
     public function destroy(string $id)
     {
+        $id = decrypt_string($id);
         $delete = Guardian::find($id);
         $delete->delete();
         

@@ -25,7 +25,7 @@ class AdminController extends Controller
     public function create_admin(Request $request)
     {
         $request->validate([
-            'username' => 'string',
+            'username' => 'required|string',
             'name' => 'required|string',
             'email' => 'required|email',
             'category' => 'required|integer',
@@ -40,22 +40,7 @@ class AdminController extends Controller
             ]);
         }else{
 
-            if($request->username == null){
-                // Generate a username based on the name
-                $baseUsername = strtolower(explode(' ', trim($request->name))[0]);
-                $username = $baseUsername;
-                $counter = 1;
-
-                // Check for uniqueness and append a number if necessary
-                while (Admin::where('admin_username', $username)->exists()) {
-                    $username = $baseUsername . $counter;
-                    $counter++;
-                }
-            }else{
-                $username = $request->username;
-            }
-
-            if(Admin::where('admin_username', $username)->exists()){
+            if(Admin::where('admin_username', $request->username)->exists()){
                 return back()->withInput()->with([
                     'icon' => '<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" />',
                     'alert' => 'danger',
@@ -66,7 +51,7 @@ class AdminController extends Controller
             
             $generatedPassword = Str::password(8);
             Admin::create([
-                        'admin_username' => $username,
+                        'admin_username' => $request->username,
                         'admin_name' => $request->name,
                         'admin_email' => $request->email,
                         'admin_status' => 1,
@@ -76,7 +61,7 @@ class AdminController extends Controller
 
             Mail::to($request->email)->send(new AdminRegistration([
                 'name' => $request->name,
-                'username' => $username,
+                'username' => $request->username,
                 'password' => $generatedPassword,
             ]));
 
@@ -90,6 +75,8 @@ class AdminController extends Controller
     }
     public function activate(string $id)
     {
+        $id = decrypt_string($id);
+
         $admin = Admin::findOrFail($id);
         $admin->admin_status = '1';
         $admin->save();
@@ -98,6 +85,8 @@ class AdminController extends Controller
     }
     public function deactivate(string $id)
     {
+        $id = decrypt_string($id);
+        
         $admin = Admin::findOrFail($id);
         $admin->admin_status = '2';
         $admin->save();

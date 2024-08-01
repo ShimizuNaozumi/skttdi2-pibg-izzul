@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('admin_name');
             $table->string('admin_username')->unique();
             $table->string('admin_email')->unique();
-            $table->string('admin_notel')->unique()->nullable();
+            $table->string('admin_notel')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('admin_password');
             $table->enum('admin_status', ['1', '2']);
